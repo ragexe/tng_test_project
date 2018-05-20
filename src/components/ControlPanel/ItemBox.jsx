@@ -1,5 +1,5 @@
 import React from 'react';
-import {mmToIn} from '../../core/utils';
+import { getMeasureSystemDefinedCaption as getCaption} from '../../core/utils';
 import './itemBox.css';
 
 export const ItemBox = (props) => {
@@ -7,7 +7,8 @@ export const ItemBox = (props) => {
     const thumbStyle = {
         width: productIsWiderThanLarger ? '7em' : 'auto',
         height:  productIsWiderThanLarger ? 'auto' : '7em'
-    }
+    };
+
     return (
         <li>
             <a onMouseOver={props.onHovered} className={props.isActive ? 'item-box item-box--active' : 'item-box'}>
@@ -22,8 +23,8 @@ export const ItemBox = (props) => {
                 <div className="item-box__content-overlay">
                     <div className="content-overlay__title">
                         <span className="item-box__title">
-                            {props.item.itemBoxThumb.width && <span>W: {mmToIn(props.item.itemBoxThumb.width)} in</span>}&nbsp;
-                            {props.item.itemBoxThumb.height && <span>H: {mmToIn(props.item.itemBoxThumb.height)} in</span>}
+                            {props.item.itemBoxThumb.width && <span>W: {getCaption(props.measureSystem, props.item.itemBoxThumb.width)}</span>}&nbsp;
+                            {props.item.itemBoxThumb.height && <span>H: {getCaption(props.measureSystem, props.item.itemBoxThumb.height)}</span>}
                         </span>
                     </div>
                 </div>

@@ -5,17 +5,17 @@ import { DragArea } from '../Dragging/DragArea';
 
 export const CompareWithItem = (props) => {
     const compareWithItemCalculations = props.calculations.compareProducts(props.product, props.item);
-    const productMeasures = measures(props.product, compareWithItemCalculations.product.size);
-    const itemMeasures = measures(props.item, compareWithItemCalculations.item.size);
+    const productMeasures = measures(props.product, compareWithItemCalculations.product.size, props.measureSystem);
+    const itemMeasures = measures(props.item, compareWithItemCalculations.item.size, props.measureSystem);
     return (
         <DragArea bodySize = {props.bodySize} calculations = {compareWithItemCalculations}>
-            <Item 
+            <Item
                 size={ compareWithItemCalculations.product.size }
                 position={ compareWithItemCalculations.product.position }
                 measures={ productMeasures }
                 item={ props.product }
             />
-            <Item 
+            <Item
                 size={ compareWithItemCalculations.item.size }
                 position={ compareWithItemCalculations.item.position }
                 measures={ itemMeasures }

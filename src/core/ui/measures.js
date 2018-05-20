@@ -1,5 +1,5 @@
-import { distanceBetweenPoints, mmToIn } from '../utils';
-import { 
+import { distanceBetweenPoints, getMeasureSystemDefinedCaption, mmToCm, mmToIn, UNITS } from '../utils';
+import {
     ITEM_MARGIN_TOP,
     ITEM_MARGIN_LEFT,
     MEASURE_HEIGHT,
@@ -8,8 +8,10 @@ import {
     MEASURE_TEXT_PADDING,
     MEASURE_TEXT_OFFSET
 } from '../../constants/ui';
+import { switchItem } from '../../containers/ControlPanel/actions';
 
 const getTextWidth = (text) => text.length * MEASURE_TEXT_SYMBOL_WIDTH + MEASURE_TEXT_PADDING;
+
 const getMeasureDimensions = (measureWidth, captionText, verticalMeasure) => {
     let textWidth = getTextWidth(captionText);
     if (measureWidth < textWidth) {
@@ -18,7 +20,7 @@ const getMeasureDimensions = (measureWidth, captionText, verticalMeasure) => {
             textOffsetX: Math.round((measureWidth - textWidth) / 2 + captionText.length * 1.5),
             textOffsetY: verticalMeasure ? -MEASURE_TEXT_OFFSET : MEASURE_TEXT_OFFSET
         };
-    } 
+    }
     return {
         arrowWidth: Math.round((measureWidth - textWidth) / 2),
         textOffsetX: 0,
@@ -26,7 +28,7 @@ const getMeasureDimensions = (measureWidth, captionText, verticalMeasure) => {
     };
 };
 
-export const measures = (item, size) => {
+export const measures = (item, size, measureSystemType) => {
     const projection = item.projections.filter((p) => p.active)[0];
     return projection.measures.map((measure) => {
         // calculate width
@@ -35,7 +37,7 @@ export const measures = (item, size) => {
             x2 = Math.max(measure.pointB.x, 0),
             y2 = measure.pointB.y;
 
-        const 
+        const
             verticalMeasure = x1 <= 0.001 && x2 <= 0.001,
             horizontalMeasure = y1 >= 0.999 && y2 >= 0.999;
 
@@ -50,7 +52,7 @@ export const measures = (item, size) => {
 
         //setup text labels
         let text = {
-            caption: `${mmToIn(measure.size)} in`
+            caption: getMeasureSystemDefinedCaption(measureSystemType, measure.size)
         };
         const { arrowWidth, textOffsetX, textOffsetY } = getMeasureDimensions(measureWidth, text.caption, verticalMeasure);
         text.top = `${textOffsetY}px`;
@@ -58,25 +60,24 @@ export const measures = (item, size) => {
         text.width = textOffsetY === 0 && textOffsetX === 0 ? `${measureWidth}px` : 'auto';
 
         //rotation
-        const 
+        const
             deltaX = x1 - x2,
             deltaY = y1 - y2,
             deg = Math.abs(deltaX) < 0.001 ? 270 : Math.atan(deltaY / deltaX) * 180 / Math.PI;
-        
+
         //tranform origin
-        const 
+        const
             transformOriginX = Math.round(measureWidth / 2),
             transformOriginY = Math.round(MEASURE_HEIGHT / 2);
 
         //position
-        const 
+        const
             middlePoint = (a, b) => Math.min(a, b) + Math.abs(a - b) / 2,
             offsetX = verticalMeasure ? -MEASURE_HEIGHT : 0,
             offsetY = horizontalMeasure ? MEASURE_HORIZONTAL_OFFSET : 0,
             top = Math.round(middlePoint(y2, y1) + offsetY + ITEM_MARGIN_TOP),
             left = Math.round(middlePoint(x2, x1) - measureWidth / 2 + offsetX + ITEM_MARGIN_LEFT);
-        
-            
+
         return {
             top: `${top}px`,
             left: `${left}px`,

@@ -5,6 +5,7 @@ import { Measure } from './Measure';
 
 export const Item = (props) => {
     const projection = props.item.projections.filter((p) => p.active)[0];
+
     return (
         <div className="item">
             <div>

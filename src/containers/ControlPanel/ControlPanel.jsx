@@ -34,12 +34,17 @@ export class ControlPanel extends Component {
         return (
             <div className="control-panel">
                 <ReactIScroll iScroll={iScroll} options={options}>
-                    <div className="iscroll-wrap" style={{ width: computedWidth }}>
+                    <div className="iscroll-wrap" style={{width: computedWidth}}>
                         <ul>
                             {
                                 Object.keys(this.props.modes).map(mode =>
-                                    this.props.modes[mode].items.map(item => 
-                                        <ItemBox item={item} isActive={this.isItemActive(item)} onHovered={this.itemHoveredHandler.bind(this, item, mode)} />
+                                    this.props.modes[mode].items.map(item =>
+                                        <ItemBox
+                                            item={item}
+                                            isActive={this.isItemActive(item)}
+                                            onHovered={this.itemHoveredHandler.bind(this, item, mode)}
+                                            measureSystem = {this.props.measureSystem}
+                                        />
                                     )
                                 )
                             }
@@ -54,7 +59,8 @@ export class ControlPanel extends Component {
 let mapStateToProps = (state) => {
     return {
         modes: state.ControlPanel.modes,
-        currentItems: state.ControlPanel.currentItems
+        currentItems: state.ControlPanel.currentItems,
+        measureSystem: state.ComparePanel.measureSystem
     };
 };
 

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { Draggable } from './Draggable';
-import { 
-    ITEM_MARGIN_TOP, 
-    ITEM_MARGIN_LEFT, 
+import {
+    ITEM_MARGIN_TOP,
+    ITEM_MARGIN_LEFT,
     DEFAULT_ZINDEX,
     ACTIVE_ZINDEX,
 } from '../../constants/ui';
@@ -109,14 +109,14 @@ export class DragArea extends Component {
 
     render () {
         return (
-            <div 
-                className="drag-area" 
-                style={{width: this.props.bodySize.width, height: this.props.bodySize.height}} 
+            <div
+                className="drag-area"
+                style={{width: this.props.bodySize.width, height: this.props.bodySize.height}}
                 ref={(el) => this.dragArea = el}>
-                { 
+                {
                     this.state.isDomReady &&
                     this.props.children.map((el) => {
-                        return (<Draggable 
+                        return (<Draggable
                             key={el.props.item.id}
                             itemId = {el.props.item.id}
                             bounds={this.bounds}
